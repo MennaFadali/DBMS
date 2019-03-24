@@ -34,5 +34,13 @@ public class BitMap {
         bits.add(idx + 1, val == 0 ? '0' : '1');
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (char x : bits)
+            sb.append(x);
+        return sb.toString();
+    }
+
 
 }
