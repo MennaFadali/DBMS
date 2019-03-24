@@ -1,7 +1,6 @@
 package moonchild;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
 public class BitMapIndex {
@@ -20,6 +19,31 @@ public class BitMapIndex {
                 colValues.get(value).set(idx++);
             }
         }
+    }
+
+    BitMapIndex(String tableName, String colName, String type) {
+        this.tableName = tableName;
+        this.colName = colName;
+        colValues = new HashMap<>();
+        String indexname = tableName + colName;
+        String path = "/Data/" + indexname;
+        int p = 0;
+        while (true) {
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(new File(path + p)));
+                while (br.ready()) {
+                    String line[] = br.readLine().split(",");
+                    Object value = DBApp.convert(line[0], type);
+                    colValues.put(value, new BitMap(line[1]));
+                }
+                p++;
+            } catch (FileNotFoundException e) {
+                break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     //Adding a new tuple int he table will result that we have to change all bitmap's indices size

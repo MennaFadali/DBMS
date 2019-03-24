@@ -8,16 +8,21 @@ import java.util.*;
 
 public class DBApp {
     static transient final DateFormat dateformat = new SimpleDateFormat("E MMM d HH:mm:ss z yyyy");
-    // static transient final DateFormat dateformat = new
     // SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     static transient HashSet<String> tables;
     // N represents the maximumNumberofRowsperPage
     static int N;
+    //M represents the maximum number of colValue,BitMap per page
     static int M;
+    static transient HashMap<String, BitMapIndex> indices;
+    static transient Storage pageformation;
 
     public DBApp() {
         tables = new HashSet<>();
         Properties prop = new Properties();
+        indices = new HashMap<>();
+        pageformation = new Storage();
+        GetIndicesFromMetaDataFile();
         try {
             prop.load(new FileInputStream("config/DBApp.properties"));
             this.N = Integer.parseInt(prop.getProperty("MaximumRowsCountinPage"));
@@ -121,6 +126,24 @@ public class DBApp {
 
     static boolean compare(Comparable a, Comparable b) {
         return a.compareTo(b) == 1;
+    }
+
+    void GetIndicesFromMetaDataFile() {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(new File("/Data/metadata.csv")));
+            while (br.ready()) {
+                String line[] = br.readLine().split(",");
+                if (line[4] == "true") {
+                    String tablename = line[0];
+                    String colName = line[1];
+                    indices.put(tablename + colName, new BitMapIndex(tablename, colName, line[2]));
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void createTable(String strTableName, String strClusteringKeyColumn,
@@ -255,5 +278,17 @@ public class DBApp {
         }
         return ans;
     }
+
+    /*
+    ##########################################################
+                    PART TWO OF THE PROJECT
+    ##########################################################
+     */
+
+    public void createBitmapIndex(String strTableName, String strColName) throws DBAppException {
+        Table table = Table.loadTable(strTableName);
+
+    }
+
 
 }

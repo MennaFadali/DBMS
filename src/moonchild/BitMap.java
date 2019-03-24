@@ -15,6 +15,12 @@ public class BitMap {
             bits.add('0');
     }
 
+    BitMap(String s) {
+        bits = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++)
+            bits.add(s.charAt(i));
+    }
+
     static BitMap and(BitMap one, BitMap two) {
         BitMap ans = new BitMap();
         for (int i = 0; i < one.bits.size(); i++)
