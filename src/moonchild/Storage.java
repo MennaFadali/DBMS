@@ -24,6 +24,22 @@ public class Storage {
 
     }
 
+    Page getPagetofTupleNumber(String tableName, int idx) throws DBAppException {
+        Page ret = null;
+        HashMap<Integer, Integer> hm = reference.get(tableName);
+        for (int page = 0; page < hm.size(); page++) {
+            int next = hm.get(page + 1);
+            if (idx < next) {
+                String[] arr = Table.getArrangements(tableName);
+                HashMap<String, String> types = Table.getArrangementType(tableName);
+                ret = Page.loadPage(tableName, arr, types);
+                break;
+            }
+        }
+        if (ret == null) throw new DBAppException("Tuple Number Out of Bound");
+        return ret;
+    }
+
     void SaveStorage() {
         try {
             FileWriter fw = new FileWriter("/data/metadatastorage.csv");

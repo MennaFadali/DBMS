@@ -25,9 +25,9 @@ public class BitMapIndex {
     void saveIndex() {
         String path = "/data/" + tableName + colName;
         try {
-            FileWriter fileWriter = new FileWriter(path + "1");
+            FileWriter fileWriter = new FileWriter(path + "0");
             int cnt = 0;
-            int p = 1;
+            int p = 0;
             for (Object value : colValues.keySet()) {
                 if (cnt == DBApp.M) {
                     p++;
