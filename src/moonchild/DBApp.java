@@ -129,6 +129,12 @@ public class DBApp {
         return a.compareTo(b) == 1;
     }
 
+    void closeApp() {
+        pageformation.SaveStorage();
+        for (String index : indices.keySet())
+            indices.get(index).saveIndex();
+    }
+
     void getIndicesFromMetaDataFile() {
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File("/Data/metadata.csv")));
