@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class BitMapIndex {
     String tableName, colName;
-    HashMap<Object, BitMap> colValues = new HashMap<>();
+    HashMap<Object, BitMap> colValues;
 
     BitMapIndex(Table table, String colName) {
         tableName = table.tablename;
@@ -20,6 +20,13 @@ public class BitMapIndex {
                 colValues.get(value).set(idx++);
             }
         }
+    }
+
+    //Adding a new tuple int he table will result that we have to change all bitmap's indices size
+    void AddTuple(int idx) {
+        for (Object value : colValues.keySet())
+            colValues.get(value).addBitAfter(idx, 0);
+
     }
 
     void saveIndex() {
