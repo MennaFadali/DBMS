@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class DBApp {
+    static transient final String metadata = "/Data/metadata";
     static transient final DateFormat dateformat = new SimpleDateFormat("E MMM d HH:mm:ss z yyyy");
     // SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     static transient HashSet<String> tables;
@@ -22,7 +23,7 @@ public class DBApp {
         Properties prop = new Properties();
         indices = new HashMap<>();
         pageformation = new Storage();
-        GetIndicesFromMetaDataFile();
+        getIndicesFromMetaDataFile();
         try {
             prop.load(new FileInputStream("config/DBApp.properties"));
             this.N = Integer.parseInt(prop.getProperty("MaximumRowsCountinPage"));
@@ -128,12 +129,12 @@ public class DBApp {
         return a.compareTo(b) == 1;
     }
 
-    void GetIndicesFromMetaDataFile() {
+    void getIndicesFromMetaDataFile() {
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File("/Data/metadata.csv")));
             while (br.ready()) {
                 String line[] = br.readLine().split(",");
-                if (line[4] == "true") {
+                if (line[4].equals("true")) {
                     String tablename = line[0];
                     String colName = line[1];
                     indices.put(tablename + colName, new BitMapIndex(tablename, colName, line[2]));
@@ -284,10 +285,33 @@ public class DBApp {
                     PART TWO OF THE PROJECT
     ##########################################################
      */
+    void updateMetaDataCSVFile(String tableName, String colName) {
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(metadata));
+            StringBuilder sb = new StringBuilder();
+            while (br.ready()) {
+                String line[] = br.readLine().split(",");
+                if (line[0].equals(tableName) && line[1].equals(colName)) line[4] = "true";
+                for (int i = 0; i < 5; i++)
+                    sb.append(line[i] + (i == 4 ? "" : ","));
+                sb.append("\n");
+            }
+            FileWriter fw = new FileWriter(metadata);
+            fw.write(sb.toString());
+            fw.flush();
+            fw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void createBitmapIndex(String strTableName, String strColName) throws DBAppException {
         Table table = Table.loadTable(strTableName);
-
+        indices.put(strTableName + strColName, new BitMapIndex(table, strColName));
+        updateMetaDataCSVFile(strTableName, strColName);
     }
 
 
