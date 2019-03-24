@@ -2,15 +2,16 @@ package moonchild;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class BitMapIndex {
     String tableName, colName;
-    HashMap<Object, BitMap> colValues;
+    TreeMap<Object, BitMap> colValues;
 
     BitMapIndex(Table table, String colName) {
         tableName = table.tablename;
         this.colName = colName;
-        colValues = new HashMap<>();
+        colValues = new TreeMap<>();
         int idx = 0;
         for (Page page : table.pages) {
             for (HashMap<String, Object> hm : page.tuples) {
@@ -24,7 +25,7 @@ public class BitMapIndex {
     BitMapIndex(String tableName, String colName, String type) {
         this.tableName = tableName;
         this.colName = colName;
-        colValues = new HashMap<>();
+        colValues = new TreeMap<>();
         String indexname = tableName + colName;
         String path = "/Data/" + indexname;
         int p = 0;
