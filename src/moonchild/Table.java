@@ -14,6 +14,7 @@ import java.util.Vector;
 
 
 public class Table implements Serializable {
+    int size;
     Vector<Page> pages;
     String tablename;
     String[] arr;
@@ -21,6 +22,7 @@ public class Table implements Serializable {
     public Table(String tablename) {
         this.tablename = tablename;
         pages = new Vector<>();
+        size = 0;
     }
 
     static Table loadTable(String name) throws DBAppException {
@@ -33,8 +35,11 @@ public class Table implements Serializable {
             int n = Integer.parseInt(br.readLine());
             String[] ar = br.readLine().split(",");
             ans.arr = ar;
-            for (int i = 0; i < n; i++)
-                ans.pages.add(Page.loadPage(name + i, ar, types));
+            for (int i = 0; i < n; i++) {
+                Page cur = Page.loadPage(name + i, ar, types);
+                ans.pages.add(cur);
+                ans.size += cur.tuples.size();
+            }
         } catch (FileNotFoundException e) {
             throw new DBAppException("Sorry, there is no table with this name");
         } catch (IOException e) {

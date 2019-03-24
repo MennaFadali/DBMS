@@ -12,7 +12,8 @@ public class DBApp {
     // SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     static transient HashSet<String> tables;
     // N represents the maximumNumberofRowsperPage
-    int N;
+    static int N;
+    static int M;
 
     public DBApp() {
         tables = new HashSet<>();
@@ -20,6 +21,7 @@ public class DBApp {
         try {
             prop.load(new FileInputStream("config/DBApp.properties"));
             this.N = Integer.parseInt(prop.getProperty("MaximumRowsCountinPage"));
+            this.M = Integer.parseInt(prop.getProperty("BitmapSize"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -130,6 +132,7 @@ public class DBApp {
         Table.saveArrangements(strTableName, htblColNameType, 0);
         CSV(htblColNameType, strTableName, strClusteringKeyColumn);
     }
+
     //Cecking for the datatype of the column ?
     public void deleteFromTable(String strTableName, Hashtable<String, Object> htblColNameValue) throws DBAppException {
         Table cur = Table.loadTable(strTableName);
@@ -167,7 +170,8 @@ public class DBApp {
         // Handling the exceptions goes here
         Table cur = Table.loadTable(strTableName);
         String primary = getClusteringColumn(strTableName);
-        search: for (Page p : cur.pages) {
+        search:
+        for (Page p : cur.pages) {
             for (HashMap<String, Object> tuple : p.tuples) {
                 if (tuple.get(primary).equals(strKey)) {
                     for (String col : htblColNameValue.keySet()) {
