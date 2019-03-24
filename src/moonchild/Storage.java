@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class Storage {
     HashMap<String, HashMap<Integer, Integer>> reference;
 
-    //TableName,PageNum,idxofTheFirstElemnt
+    //TableName,PageNum,Numberofthelastelement
     public Storage() {
         reference = new HashMap<>();
         try {
@@ -28,8 +28,7 @@ public class Storage {
         Page ret = null;
         HashMap<Integer, Integer> hm = reference.get(tableName);
         for (int page = 0; page < hm.size(); page++) {
-            int next = hm.get(page + 1);
-            if (idx < next) {
+            if (idx < hm.get(page)) {
                 String[] arr = Table.getArrangements(tableName);
                 HashMap<String, String> types = Table.getArrangementType(tableName);
                 ret = Page.loadPage(tableName, arr, types);
