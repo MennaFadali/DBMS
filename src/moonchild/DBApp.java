@@ -104,6 +104,12 @@ public class DBApp {
         return "";
     }
 
+    static Comparable convert(Object a) {
+        String b = a.toString();
+        String type = a.getClass().toString().substring(6);
+        return convert(b, type);
+    }
+
     static Comparable convert(String a, String type) {
         switch (type) {
             case "java.lang.double":
@@ -319,6 +325,11 @@ public class DBApp {
         Table table = Table.loadTable(strTableName);
         indices.put(strTableName + strColName, new BitMapIndex(table, strColName));
         updateMetaDataCSVFile(strTableName, strColName);
+    }
+
+    public Iterator selectFromTable(SQLTerm[] arrSQLTerms, String[] strarrOperators) throws DBAppException {
+
+        return null;
     }
 
 

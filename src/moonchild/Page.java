@@ -8,6 +8,7 @@ public class Page implements Serializable {
     //The Page consists of a vector of tuples where each tuple is a hashmap that maps the col name to its value
     Vector<HashMap<String, Object>> tuples;
     String name;
+    int number;
 
     Page(String name) {
         tuples = new Vector<>();

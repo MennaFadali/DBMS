@@ -6,7 +6,7 @@ import java.util.TreeMap;
 
 public class BitMapIndex {
     String tableName, colName;
-    TreeMap<Object, BitMap> colValues;
+    TreeMap<Comparable, BitMap> colValues;
 
     BitMapIndex(Table table, String colName) {
         tableName = table.tablename;
@@ -16,7 +16,7 @@ public class BitMapIndex {
         for (Page page : table.pages) {
             for (HashMap<String, Object> hm : page.tuples) {
                 Object value = hm.get(colName);
-                if (!colValues.containsKey(value)) colValues.put(value, new BitMap(table.size));
+                if (!colValues.containsKey(value)) colValues.put(DBApp.convert(value), new BitMap(table.size));
                 colValues.get(value).set(idx++);
             }
         }
@@ -27,14 +27,14 @@ public class BitMapIndex {
         this.colName = colName;
         colValues = new TreeMap<>();
         String indexname = tableName + colName;
-        String path = "/Data/" + indexname;
+        String path = "data/" + indexname;
         int p = 0;
         while (true) {
             try {
                 BufferedReader br = new BufferedReader(new FileReader(new File(path + p)));
                 while (br.ready()) {
                     String line[] = br.readLine().split(",");
-                    Object value = DBApp.convert(line[0], type);
+                    Comparable value = DBApp.convert(line[0], type);
                     colValues.put(value, new BitMap(line[1]));
                 }
                 p++;

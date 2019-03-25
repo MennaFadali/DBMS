@@ -32,6 +32,7 @@ public class Storage {
                 String[] arr = Table.getArrangements(tableName);
                 HashMap<String, String> types = Table.getArrangementType(tableName);
                 ret = Page.loadPage(tableName, arr, types);
+                ret.number = page;
                 break;
             }
         }
