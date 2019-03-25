@@ -7,7 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class DBApp {
-    static transient final String metadata = "/Data/metadata";
+    static transient final String metadata = "data/metadata.csv";
+    static transient final String metadatastorage = "data/metadatastorage.csv";
     static transient final DateFormat dateformat = new SimpleDateFormat("E MMM d HH:mm:ss z yyyy");
     // SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     static transient HashSet<String> tables;
@@ -137,7 +138,7 @@ public class DBApp {
 
     void getIndicesFromMetaDataFile() {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(new File("/Data/metadata.csv")));
+            BufferedReader br = new BufferedReader(new FileReader(new File(metadata)));
             while (br.ready()) {
                 String line[] = br.readLine().split(",");
                 if (line[4].equals("true")) {
@@ -147,7 +148,6 @@ public class DBApp {
                 }
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -215,6 +215,7 @@ public class DBApp {
                     tuple.put("TouchDate", dateformat.format(new Date()));
                     break search;
                 }
+
             }
         }
         Table.saveTable(cur);
@@ -294,7 +295,7 @@ public class DBApp {
     void updateMetaDataCSVFile(String tableName, String colName) {
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(metadata));
+            BufferedReader br = new BufferedReader(new FileReader(new File(metadata)));
             StringBuilder sb = new StringBuilder();
             while (br.ready()) {
                 String line[] = br.readLine().split(",");

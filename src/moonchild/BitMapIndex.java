@@ -55,7 +55,7 @@ public class BitMapIndex {
     }
 
     void saveIndex() {
-        String path = "/data/" + tableName + colName;
+        String path = "data/" + tableName + colName;
         try {
             FileWriter fileWriter = new FileWriter(path + "0");
             int cnt = 0;

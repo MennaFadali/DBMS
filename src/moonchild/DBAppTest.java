@@ -14,27 +14,26 @@ public class DBAppTest {
         database.createTable(strTableName, "id", htblColNameType);
         Hashtable htblColNameValue = new Hashtable();
         htblColNameValue.put("id", new Integer(1));
-        htblColNameValue.put("name", new String("Ahmed Noor"));
+        htblColNameValue.put("name", new String("A"));
         htblColNameValue.put("gpa", new Double(0.95));
         database.insertIntoTable(strTableName, htblColNameValue);
         htblColNameValue.clear();
-//        htblColNameValue.put("id", new Integer(5674567));
-//        htblColNameValue.put("name", new String("Dalia Noor"));
-//        htblColNameValue.put("gpa", new Double(1.25));
-//        Thread.sleep(3000);
-//        database.insertIntoTable(strTableName, htblColNameValue);
+        htblColNameValue.put("id", new Integer(2));
+        htblColNameValue.put("name", new String("B"));
+        htblColNameValue.put("gpa", new Double(1.25));
+        database.insertIntoTable(strTableName, htblColNameValue);
         htblColNameValue.clear();
         htblColNameValue.put("id", new Integer(3));
-        htblColNameValue.put("name", new String("Menna Fadali"));
+        htblColNameValue.put("name", new String("A"));
         htblColNameValue.put("gpa", new Double(1.25));
-        Thread.sleep(2000);
         database.insertIntoTable(strTableName, htblColNameValue);
         htblColNameValue.clear();
-        htblColNameValue.put("id", new Integer(2));
-        htblColNameValue.put("name", new String("John Noor"));
+        htblColNameValue.put("id", new Integer(4));
+        htblColNameValue.put("name", new String("D"));
         htblColNameValue.put("gpa", new Double(1.5));
-        Thread.sleep(1000);
-//        database.updateTable(strTableName, 99674567, htblColNameValue);
         database.insertIntoTable(strTableName, htblColNameValue);
+        database.createBitmapIndex("Student", "name");
+        database.closeApp();
     }
+
 }

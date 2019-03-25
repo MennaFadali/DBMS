@@ -17,7 +17,7 @@ public class Storage {
                 reference.get(Line[0]).put(Integer.parseInt(Line[1]), Integer.parseInt(Line[2]));
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            return;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,7 +41,7 @@ public class Storage {
 
     void SaveStorage() {
         try {
-            FileWriter fw = new FileWriter("/data/metadatastorage.csv");
+            FileWriter fw = new FileWriter(new File(DBApp.metadatastorage));
             for (String tablename : reference.keySet())
                 for (int page : reference.get(tablename).keySet())
                     fw.write(tablename + "," + page + "," + reference.get(tablename).get(page) + "\n");
