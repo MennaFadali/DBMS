@@ -31,7 +31,7 @@ public class Storage {
             if (idx < hm.get(page)) {
                 String[] arr = Table.getArrangements(tableName);
                 HashMap<String, String> types = Table.getArrangementType(tableName);
-                ret = Page.loadPage(tableName, arr, types);
+                ret = Page.loadPage(tableName + page, page, arr, types);
                 ret.number = page;
                 break;
             }

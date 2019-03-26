@@ -1,8 +1,7 @@
 package moonchild;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.TreeMap;
+import java.util.*;
 
 public class BitMapIndex {
     String tableName, colName;
@@ -78,5 +77,57 @@ public class BitMapIndex {
         }
     }
 
+
+    void updateTableWithIndex(Comparable strKey, Hashtable<String, Object> htblColNameValue) throws DBAppException {
+        if (!colValues.containsKey(strKey)) return;
+        BitMap primarybitmap = colValues.get(strKey);
+        ArrayList<Integer> idxs = primarybitmap.findOnes();
+        String[] arr = Table.getArrangements(tableName);
+        for (int idx : idxs) {
+            Page cur = DBApp.pageformation.getPagetofTupleNumber(tableName, idx);
+            for (HashMap<String, Object> tuple : cur.tuples) {
+                if (tuple.get(colName).equals(strKey)) {
+                    for (String col : htblColNameValue.keySet()) {
+                        Comparable oldvalue = (Comparable) tuple.get(col);
+                        Comparable newval = (Comparable) htblColNameValue.get(col);
+                        colValues.get(oldvalue).clear(idx);
+                        colValues.get(newval).set(idx);
+                        tuple.put(col, htblColNameValue.get(col));
+                    }
+                }
+            }
+            Page.savePage(cur, arr);
+        }
+    }
+
+    BitMap getTheBitMap(String operator, Object value) {
+        BitMap ans = null;
+        int n = colValues.get(colValues.lastKey()).bits.size();
+        switch (operator) {
+            case "=":
+                return colValues.get(value);
+            case "!=":
+                return colValues.containsKey(value) ? BitMap.not(colValues.get(value)) : new BitMap(n, '1');
+            case "<":
+                return colValues.firstKey().equals(value) ? new BitMap(n) : getOr(colValues.subMap(colValues.firstKey(), colValues.lowerKey((Comparable) value)), n);
+            case "<=":
+                return  getOr(colValues.subMap(colValues.firstKey(), colValues.lowerKey((Comparable) value)), n);
+            case ">" :
+//                return colValues.lastKey().equals(value) ? new BitMap(n) : getOr(colValues.subMap(colValues.higherKey((Comparable) value), colValues.lastKey(), n));
+            case ">=" :
+
+
+        }
+
+        return null;
+    }
+
+    BitMap getOr(SortedMap<Comparable, BitMap> tm, int n) {
+        BitMap ans = new BitMap(n);
+        for (Comparable val : tm.keySet()) {
+            ans = BitMap.or(ans, tm.get(val));
+        }
+        return ans;
+    }
 
 }

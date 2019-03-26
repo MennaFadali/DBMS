@@ -25,6 +25,7 @@ public class DBApp {
         indices = new HashMap<>();
         pageformation = new Storage();
         getIndicesFromMetaDataFile();
+        getAllTables();
         try {
             prop.load(new FileInputStream("config/DBApp.properties"));
             this.N = Integer.parseInt(prop.getProperty("MaximumRowsCountinPage"));
@@ -83,7 +84,7 @@ public class DBApp {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "";
+        return "Not Found";
     }
 
     static String getClusteringColumnTyple(String tablename) {
@@ -104,10 +105,16 @@ public class DBApp {
         return "";
     }
 
+    static String getObjectType(Object a) {
+        return a.getClass().toString().substring(6);
+    }
+
     static Comparable convert(Object a) {
-        String b = a.toString();
-        String type = a.getClass().toString().substring(6);
-        return convert(b, type);
+        return (Comparable) a;
+    }
+
+    static boolean hasIndex(String tablename, String colName) {
+        return indices.containsKey(tablename + colName);
     }
 
     static Comparable convert(String a, String type) {
@@ -134,6 +141,20 @@ public class DBApp {
 
     static boolean compare(Comparable a, Comparable b) {
         return a.compareTo(b) == 1;
+    }
+
+    public void getAllTables() {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(new File(metadata)));
+            while (br.ready()) {
+                String[] line = br.readLine().split(",");
+                tables.add(line[0]);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     void closeApp() {
@@ -201,11 +222,24 @@ public class DBApp {
 
     }
 
+
     public void updateTable(String strTableName, Object strKey, Hashtable<String, Object> htblColNameValue)
             throws DBAppException {
-        // Handling the exceptions goes here
-        Table cur = Table.loadTable(strTableName);
+        //Handling the Exceptions
+        /*
+        Check that the Hashtable is correct
+         */
+        if (!tables.contains(strTableName)) throw new DBAppException("The Table does not exist");
         String primary = getClusteringColumn(strTableName);
+        if (primary.equals("Not Found")) throw new DBAppException("The Table does not exist");
+        String type = getClusteringColumnTyple(strTableName);
+        if (!type.equals(getObjectType(strKey)))
+            throw new DBAppException("The type of the given primary key does not match the type of the clustering key of the table");
+        if (hasIndex(strTableName, primary)) {
+            indices.get(strTableName + primary).updateTableWithIndex(convert(strKey), htblColNameValue);
+            return;
+        }
+        Table cur = Table.loadTable(strTableName);
         search:
         for (Page p : cur.pages) {
             for (HashMap<String, Object> tuple : p.tuples) {
@@ -226,6 +260,7 @@ public class DBApp {
         }
         Table.saveTable(cur);
     }
+
 
     //Checking for if the primary key existed before ?
     public void insertIntoTable(String strTableName, Hashtable<String, Object> htblColNameValue) throws DBAppException {

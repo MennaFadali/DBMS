@@ -19,8 +19,10 @@ public class Page implements Serializable {
         tuples = new Vector<>();
     }
 
-    static Page loadPage(String name, String[] arrangement, HashMap<String, String> types) throws DBAppException {
+
+    static Page loadPage(String name, int number, String[] arrangement, HashMap<String, String> types) throws DBAppException {
         Page ans = new Page(name);
+        ans.number = number;
         try {
             FileReader fr = new FileReader(new File("data/" + name));
             BufferedReader br = new BufferedReader(fr);

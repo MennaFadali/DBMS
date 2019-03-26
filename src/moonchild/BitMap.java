@@ -15,6 +15,12 @@ public class BitMap {
             bits.add('0');
     }
 
+    BitMap(int n, char x) {
+        bits = new ArrayList<>();
+        for (int i = 0; i < n; i++)
+            bits.add(x);
+    }
+
     BitMap(String s) {
         bits = new ArrayList<>();
         for (int i = 0; i < s.length(); i++)
@@ -100,6 +106,13 @@ public class BitMap {
         for (char x : bits)
             sb.append(x);
         return sb.toString();
+    }
+
+    ArrayList<Integer> findOnes() {
+        ArrayList<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < bits.size(); i++)
+            if (bits.get(i).equals('1')) ans.add(i);
+        return ans;
     }
 
 
