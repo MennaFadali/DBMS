@@ -36,7 +36,7 @@ public class Table implements Serializable {
             String[] ar = br.readLine().split(",");
             ans.arr = ar;
             for (int i = 0; i < n; i++) {
-                Page cur = Page.loadPage(name + i, ar, types);
+                Page cur = Page.loadPage(name + i, i, ar, types);
                 ans.pages.add(cur);
                 ans.size += cur.tuples.size();
             }
@@ -50,11 +50,11 @@ public class Table implements Serializable {
 
 
     static void saveTable(Table table) {
-        String path = "data/" + table.tablename;
         int n = table.pages.size();
         saveArrangements(table.tablename, table.arr, n);
         for (int i = 0; i < n; i++)
             Page.savePage(table.pages.get(i), table.arr);
+        //Handline extra pages on disk
     }
 
     static String[] getArrangements(String name) {

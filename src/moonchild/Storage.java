@@ -6,11 +6,11 @@ import java.util.HashMap;
 public class Storage {
     HashMap<String, HashMap<Integer, Integer>> reference;
 
-    //TableName,PageNum,Numberofthelastelement
+    //TableName,PageNum,Numberofthelastelement NOT index
     public Storage() {
         reference = new HashMap<>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader(new File("/data/metadatastorage.csv")));
+            BufferedReader br = new BufferedReader(new FileReader(new File(DBApp.metadatastorage)));
             while (br.ready()) {
                 String Line[] = br.readLine().split(",");
                 if (!reference.containsKey(Line[0])) reference.put(Line[0], new HashMap<>());
@@ -53,5 +53,14 @@ public class Storage {
         }
     }
 
+    void UpdateTable(Table table) {
+        reference.put(table.tablename, new HashMap<>());
+        int cnt = 0;
+        for (int i = 0; i < table.pages.size(); i++) {
+            cnt += table.pages.get(i).tuples.size();
+            reference.get(table.tablename).put(i, cnt);
+        }
+
+    }
 
 }

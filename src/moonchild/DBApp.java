@@ -143,6 +143,131 @@ public class DBApp {
         return a.compareTo(b) == 1;
     }
 
+    static boolean satisfies(HashMap<String, Object> hm, SQLTerm[] terms, String[] operations) {
+        int n = operations.length;
+        Stack<Object> one = new Stack<>();
+        Stack<Object> two = new Stack<>();
+        for (int i = 0; i < n; i++) {
+            one.push(terms[i]);
+            if (operations[i].equals("AND")) {
+                SQLTerm a = (SQLTerm) one.pop();
+                SQLTerm b = terms[i + 1];
+                Boolean result = satisfies(hm, a) && satisfies(hm, b);
+                one.push(result);
+            } else {
+                one.push(operations[i]);
+                one.push(terms[i + 1]);
+            }
+        }
+        while (!one.isEmpty()) {
+            Object cur = one.pop();
+            if (cur instanceof String && cur.toString().equals("XOR")) {
+                Object o1 = two.pop();
+                Object o2 = one.pop();
+                Boolean result = satisfies(hm, o1) ^ satisfies(hm, o2);
+                two.push(result);
+            } else {
+                two.push(cur);
+            }
+        }
+        Boolean result = false;
+        while (!two.isEmpty()) {
+            Object cur = two.pop();
+            if (cur instanceof String) continue;
+            result |= satisfies(hm, cur);
+        }
+        return result;
+    }
+
+    static boolean satisfies(HashMap<String, Object> hm, Object term) {
+        if (term instanceof Boolean) return (boolean) term;
+        SQLTerm t = (SQLTerm) term;
+        Comparable curval = (Comparable) hm.get(t._strColumnName);
+        switch (t._strOperator) {
+            case "=":
+                return curval.equals(t._objValue);
+            case "!=":
+                return !curval.equals(t._objValue);
+            case "<":
+                return curval.compareTo(t._objValue) == -1;
+            case "<=":
+                return curval.compareTo(t._objValue) == -1 || curval.compareTo(t._objValue) == 0;
+            case ">":
+                return curval.compareTo(t._objValue) == 1;
+            case ">=":
+                return curval.compareTo(t._objValue) == 1 || curval.compareTo(t._objValue) == -0;
+        }
+        return false;
+    }
+
+    public static HashMap<String, String> getDatatypes(String tablename) {
+        FileReader fr;
+        HashMap<String, String> ans = new HashMap<>();
+        try {
+            fr = new FileReader("data/metadata.csv");
+            BufferedReader br = new BufferedReader(fr);
+            while (br.ready()) {
+                String[] tmp = br.readLine().split(",");
+                if (!tmp[0].equals(tablename))
+                    continue;
+                ans.put(tmp[1], "class " + tmp[2]);
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return ans;
+    }
+
+    public static void exceptionCheck(String tableName, Hashtable<String, Object> htblColNameValue) throws DBAppException {
+        if (!tables.contains(tableName)) throw new DBAppException("The Table does not exist");
+        HashMap<String, String> types = getDatatypes(tableName);
+        for (String col : htblColNameValue.keySet()) {
+            if (!types.containsKey(col))
+                throw new DBAppException("Sorry this table does not have the coloumn " + col);
+            if (!types.get(col).equals(htblColNameValue.get(col).getClass().toString()))
+                throw new DBAppException("Sorry the coloumn " + col + " does not have this datatype");
+        }
+
+    }
+
+    static BitMap satisfies(BitMap[] bitMaps, String[] operations) {
+        int n = operations.length;
+        Stack<Object> one = new Stack<>();
+        Stack<Object> two = new Stack<>();
+        for (int i = 0; i < n; i++) {
+            one.push(bitMaps[i]);
+            if (operations[i].equals("AND")) {
+                BitMap a = (BitMap) one.pop();
+                BitMap b = bitMaps[i + 1];
+                BitMap result = BitMap.and(a, b);
+                one.push(result);
+            } else {
+                one.push(operations[i]);
+                one.push(bitMaps[i + 1]);
+            }
+        }
+        while (!one.isEmpty()) {
+            Object cur = one.pop();
+            if (cur instanceof String && cur.toString().equals("XOR")) {
+                BitMap a = (BitMap) two.pop();
+                BitMap b = (BitMap) one.pop();
+                BitMap result = BitMap.xor(a, b);
+                two.push(result);
+            } else {
+                two.push(cur);
+            }
+        }
+        BitMap result = null;
+        while (!two.isEmpty()) {
+            Object cur = two.pop();
+            if (cur instanceof String) continue;
+            BitMap c = (BitMap) cur;
+            result = (result == null) ? c : BitMap.or(result, c);
+        }
+        return result;
+    }
+
     public void getAllTables() {
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File(metadata)));
@@ -151,7 +276,6 @@ public class DBApp {
                 tables.add(line[0]);
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -190,48 +314,10 @@ public class DBApp {
         CSV(htblColNameType, strTableName, strClusteringKeyColumn);
     }
 
-    //Cecking for the datatype of the column ?
-    public void deleteFromTable(String strTableName, Hashtable<String, Object> htblColNameValue) throws DBAppException {
-        Table cur = Table.loadTable(strTableName);
-        Table res = new Table(strTableName);
-        HashMap<String, String> types = getDatatypes(strTableName);
-        for (String col : htblColNameValue.keySet()) {
-            if (!types.containsKey(col))
-                throw new DBAppException("Sorry this table does not have the coloumn " + col);
-            if (!types.get(col).equals(htblColNameValue.get(col).getClass().toString()))
-                throw new DBAppException("Sorry the coloumn " + col + " does not have this datatype");
-        }
-        for (Page p : cur.pages) {
-            Page rpage = new Page();
-            for (HashMap<String, Object> hm : p.tuples) {
-                boolean del = true;
-                for (String x : htblColNameValue.keySet()) {
-                    if (!hm.get(x).equals(htblColNameValue.get(x)))
-                        del = false;
-                }
-                if (!del)
-                    rpage.tuples.add(hm);
-            }
-            rpage.setName(strTableName + res.pages.size());
-            if (rpage.tuples.size() != 0)
-                res.pages.add(rpage);
-        }
-        res.arr = cur.arr;
-        Table.saveTable(res);
-        return;
-
-    }
-
-
     public void updateTable(String strTableName, Object strKey, Hashtable<String, Object> htblColNameValue)
             throws DBAppException {
-        //Handling the Exceptions
-        /*
-        Check that the Hashtable is correct
-         */
-        if (!tables.contains(strTableName)) throw new DBAppException("The Table does not exist");
+        exceptionCheck(strTableName, htblColNameValue);
         String primary = getClusteringColumn(strTableName);
-        if (primary.equals("Not Found")) throw new DBAppException("The Table does not exist");
         String type = getClusteringColumnTyple(strTableName);
         if (!type.equals(getObjectType(strKey)))
             throw new DBAppException("The type of the given primary key does not match the type of the clustering key of the table");
@@ -258,12 +344,59 @@ public class DBApp {
 
             }
         }
+        pageformation.UpdateTable(cur);
         Table.saveTable(cur);
     }
 
+    //Cecking for the datatype of the column ?
+    public void deleteFromTable(String strTableName, Hashtable<String, Object> htblColNameValue) throws DBAppException {
+        exceptionCheck(strTableName, htblColNameValue);
+        for (String col : htblColNameValue.keySet()) {
+            if (hasIndex(strTableName, col)) {
+                indices.get(strTableName + col).delete(htblColNameValue);
 
-    //Checking for if the primary key existed before ?
+                return;
+            }
+        }
+        Table cur = Table.loadTable(strTableName);
+        Table res = new Table(strTableName);
+        HashMap<String, String> types = getDatatypes(strTableName);
+        for (String col : htblColNameValue.keySet()) {
+            if (!types.containsKey(col))
+                throw new DBAppException("Sorry this table does not have the coloumn " + col);
+            if (!types.get(col).equals(htblColNameValue.get(col).getClass().toString()))
+                throw new DBAppException("Sorry the coloumn " + col + " does not have this datatype");
+        }
+        for (Page p : cur.pages) {
+            Page rpage = new Page();
+            for (HashMap<String, Object> hm : p.tuples) {
+                boolean del = true;
+                for (String x : htblColNameValue.keySet()) {
+                    if (!hm.get(x).equals(htblColNameValue.get(x)))
+                        del = false;
+                }
+                if (!del)
+                    rpage.tuples.add(hm);
+            }
+            rpage.setName(strTableName + res.pages.size());
+            if (rpage.tuples.size() != 0)
+                res.pages.add(rpage);
+        }
+        res.arr = cur.arr;
+        pageformation.UpdateTable(res);
+        Table.saveTable(res);
+        managesIndicies(strTableName);
+        return;
+
+    }
+
     public void insertIntoTable(String strTableName, Hashtable<String, Object> htblColNameValue) throws DBAppException {
+        exceptionCheck(strTableName, htblColNameValue);
+        String primarycol = getClusteringColumn(strTableName);
+        if (hasIndex(strTableName, primarycol)) {
+            indices.get(strTableName + primarycol).insert(htblColNameValue);
+            return;
+        }
         Table cur = Table.loadTable(strTableName);
         HashMap<String, String> types = getDatatypes(strTableName);
         for (String col : htblColNameValue.keySet()) {
@@ -272,15 +405,13 @@ public class DBApp {
             if (!types.get(col).equals(htblColNameValue.get(col).getClass().toString()))
                 throw new DBAppException("Sorry the coloumn " + col + " does not have this datatype");
         }
-        String primarycol = getClusteringColumn(strTableName);
-        String primarytype = getClusteringColumnTyple(strTableName);
         HashMap<String, Object> insert = new HashMap<>();
         for (String col : htblColNameValue.keySet())
             insert.put(col, htblColNameValue.get(col));
         insert.put("TouchDate", (new Date()));
         Table res = new Table(strTableName);
         for (Page page : cur.pages) {
-            Page rpage = new Page(strTableName + res.pages.size());
+            Page rpage = new Page(strTableName + res.pages.size(), res.pages.size());
             for (HashMap<String, Object> hm : page.tuples) {
                 if (insert != null) {
                     boolean flag = compare((Comparable) hm.get(primarycol), (Comparable) insert.get(primarycol));
@@ -297,7 +428,7 @@ public class DBApp {
         }
         if (insert != null) {
             if (cur.pages.size() == 0 || cur.pages.get(cur.pages.size() - 1).tuples.size() == N) {
-                Page tmp = new Page(strTableName + cur.pages.size());
+                Page tmp = new Page(strTableName + cur.pages.size(), cur.pages.size());
                 tmp.tuples.add(insert);
                 res.pages.add(tmp);
             } else
@@ -305,27 +436,9 @@ public class DBApp {
 
         }
         res.arr = cur.arr;
+        pageformation.UpdateTable(res);
         Table.saveTable(res);
-
-    }
-
-    public HashMap<String, String> getDatatypes(String tablename) {
-        FileReader fr;
-        HashMap<String, String> ans = new HashMap<>();
-        try {
-            fr = new FileReader("data/metadata.csv");
-            BufferedReader br = new BufferedReader(fr);
-            while (br.ready()) {
-                String[] tmp = br.readLine().split(",");
-                if (!tmp[0].equals(tablename))
-                    continue;
-                ans.put(tmp[1], "class " + tmp[2]);
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return ans;
+        managesIndicies(strTableName);
     }
 
     /*
@@ -363,9 +476,44 @@ public class DBApp {
     }
 
     public Iterator selectFromTable(SQLTerm[] arrSQLTerms, String[] strarrOperators) throws DBAppException {
+        ArrayList<HashMap<String, Object>> resultset = new ArrayList<>();
+        String tablename = arrSQLTerms[0]._strTableName;
+        boolean allhasindex = true;
+        for (SQLTerm term : arrSQLTerms)
+            if (!DBApp.indices.containsKey(tablename + term._strColumnName)) allhasindex = false;
+        if (!allhasindex) {
+            Table table = Table.loadTable(tablename);
+            for (Page cur : table.pages)
+                for (HashMap<String, Object> tuple : cur.tuples)
+                    if (satisfies(tuple, arrSQLTerms, strarrOperators)) resultset.add(tuple);
+        } else {
+            BitMap[] bitmaps = new BitMap[arrSQLTerms.length];
+            for (int i = 0; i < arrSQLTerms.length; i++)
+                bitmaps[i] = indices.get(tablename + arrSQLTerms[i]._strOperator).getTheBitMap(arrSQLTerms[i]._strOperator, (Comparable) arrSQLTerms[i]._objValue);
 
-        return null;
+            BitMap satisfiesall = satisfies(bitmaps, strarrOperators);
+            ArrayList<Integer> idxs = satisfiesall.findOnes();
+            for (int idx : idxs) {
+                Page cur = pageformation.getPagetofTupleNumber(tablename, idx);
+                for (HashMap<String, Object> tuple : cur.tuples)
+                    if (satisfies(tuple, arrSQLTerms, strarrOperators)) resultset.add(tuple);
+
+            }
+        }
+        return resultset.iterator();
     }
 
+    public void managesIndicies(String tableName) throws DBAppException {
+        HashSet<String> remove = new HashSet<>();
+        for (String index : indices.keySet()) {
+            if (index.length() < tableName.length() || !index.substring(0, tableName.length()).equals(tableName))
+                continue;
+            remove.add(index);
+        }
+        for (String index : remove) {
+            indices.remove(index);
+            this.createBitmapIndex(tableName, index.substring(tableName.length()));
+        }
+    }
 
 }

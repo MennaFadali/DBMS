@@ -87,7 +87,7 @@ public class BitMap {
     }
 
     void clear(int idx) {
-        bits.set(idx, '1');
+        bits.set(idx, '0');
     }
 
     void toggle(int idx) {
@@ -95,11 +95,11 @@ public class BitMap {
     }
 
     void addBitAfter(int idx, int val) {
-//        String all = new String(bits);
-//        bits = (all.substring(0, idx + 1) + '0' + all.substring(idx)).toCharArray();
         bits.add(idx + 1, val == 0 ? '0' : '1');
     }
-
+    void removeBit(int idx) {
+        bits.remove(idx);
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

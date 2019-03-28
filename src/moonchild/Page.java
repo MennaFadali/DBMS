@@ -10,9 +10,10 @@ public class Page implements Serializable {
     String name;
     int number;
 
-    Page(String name) {
+    Page(String name , int n) {
         tuples = new Vector<>();
         this.name = name;
+        number = n;
     }
 
     public Page() {
@@ -21,7 +22,7 @@ public class Page implements Serializable {
 
 
     static Page loadPage(String name, int number, String[] arrangement, HashMap<String, String> types) throws DBAppException {
-        Page ans = new Page(name);
+        Page ans = new Page(name , number);
         ans.number = number;
         try {
             FileReader fr = new FileReader(new File("data/" + name));
