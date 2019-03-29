@@ -100,6 +100,7 @@ public class BitMapIndex {
                 }
                 cnt++;
                 fileWriter.write(value + "," + (compress(colValues.get(value).toString())) + "\n");
+//                fileWriter.write(value + "," + ((colValues.get(value).toString())) + "\n");
             }
             fileWriter.flush();
             fileWriter.close();
@@ -199,23 +200,27 @@ public class BitMapIndex {
         String[] arr = Table.getArrangements(tableName);
         HashMap<String, String> types = Table.getArrangementType(tableName);
         int firstInsert = -1;
+        if (startPage == -1)
+            firstInsert = startPage = 0;
         Page begin = st.getPagetofTupleNumber(tableName, startPage);
         int realStart = begin.number;
         for (int i = realStart; i < pageCount; i++) {
             if (insert == null)
                 break;
-            Page cur = Page.loadPage(tableName + i, i, arr, types);//st.getPagetofTupleNumber(tableName, i);
+            Page cur = Page.loadPage(tableName + i, i, arr, types);
             Page rpage = new Page(cur.name, i);
             if (cur.tuples.size() < DBApp.N)
                 increasedIndex = i;
             for (int j = 0; j < cur.tuples.size(); ++j) {
                 HashMap<String, Object> hm = cur.tuples.get(j);
-                boolean flag = DBApp.compare((Comparable) hm.get(colName), (Comparable) insert.get(colName));
-                if (flag) {
-                    if (firstInsert == -1)
-                        firstInsert = j + (i > 0 ? lastTuplePerPage.get(i - 1) : 0);
-                    rpage.tuples.add(insert);
-                    insert = null;
+                if (insert != null) {
+                    boolean flag = DBApp.compare((Comparable) hm.get(colName), (Comparable) insert.get(colName));
+                    if (flag) {
+                        if (firstInsert == -1)
+                            firstInsert = j + (i > 0 ? lastTuplePerPage.get(i - 1) : 0);
+                        rpage.tuples.add(insert);
+                        insert = null;
+                    }
                 }
                 rpage.tuples.add(hm);
             }

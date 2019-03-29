@@ -9,8 +9,8 @@ public class DBAppTest {
     public static void main(String[] args) throws DBAppException, InterruptedException, IOException {
         DBApp database = new DBApp();
 //        HashMap<String, Object> htblColNameValue = new HashMap<>();
-//        String strTableName = "Student";
-//        Hashtable<String, Object> htblColNameValue = new Hashtable<>();
+        String strTableName = "Student";
+        Hashtable<String, Object> htblColNameValue = new Hashtable<>();
 //        Hashtable htblColNameType = new Hashtable();
 //        htblColNameType.put("id", "java.lang.Integer");
 //        htblColNameType.put("name", "java.lang.String");
@@ -37,7 +37,7 @@ public class DBAppTest {
 //        database.insertIntoTable(strTableName, htblColNameValue);
 //        database.createBitmapIndex("Student", "name");
 //        htblColNameValue.clear();
-//        htblColNameValue.put("id", new Integer(1));
+//        htblColNameValue.put("id", new Integer(8));
 //        htblColNameValue.put("name", new String("A"));
 //        htblColNameValue.put("gpa", new Double(0.95));
 //        database.insertIntoTable(strTableName, htblColNameValue);
@@ -55,10 +55,10 @@ public class DBAppTest {
 //        htblColNameValue.put("id", new Integer(6));
 //        database.deleteFromTable(strTableName, htblColNameValue);
 //        htblColNameValue.clear();
-//        htblColNameValue.put("id", new Integer(0));
-//        htblColNameValue.put("name", new String("Y"));
-//        htblColNameValue.put("gpa", new Double(0.85));
-//        database.insertIntoTable(strTableName, htblColNameValue);
+        htblColNameValue.put("id", new Integer(0));
+        htblColNameValue.put("name", new String("Y"));
+        htblColNameValue.put("gpa", new Double(0.85));
+        database.insertIntoTable(strTableName, htblColNameValue);
 //        SQLTerm[] arrSQLTerms;
 //        arrSQLTerms = new SQLTerm[3];
 //        for (int i = 0; i < 3; i++)
