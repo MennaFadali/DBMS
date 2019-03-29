@@ -16,7 +16,7 @@ public class BitMapIndex {
             for (HashMap<String, Object> hm : page.tuples) {
                 Object value = hm.get(colName);
                 if (!colValues.containsKey(value))
-                    colValues.put(DBApp.convert(value), new BitMap(table.size));//???????????????
+                    colValues.put(DBApp.convert(value), new BitMap(table.size));
                 colValues.get(value).set(idx++);
             }
         }
@@ -35,8 +35,8 @@ public class BitMapIndex {
                 while (br.ready()) {
                     String line[] = br.readLine().split(",");
                     Comparable value = DBApp.convert(line[0], type);
-//                    colValues.put(value, new BitMap(decompress(line[1])));
-                    colValues.put(value, new BitMap((line[1])));
+                    colValues.put(value, new BitMap(decompress(line[1])));
+//                    colValues.put(value, new BitMap((line[1])));
                 }
                 p++;
             } catch (FileNotFoundException e) {
@@ -99,7 +99,7 @@ public class BitMapIndex {
                     fileWriter = new FileWriter(path + p);
                 }
                 cnt++;
-                fileWriter.write(value + "," + (colValues.get(value).toString()) + "\n");
+                fileWriter.write(value + "," + (compress(colValues.get(value).toString())) + "\n");
             }
             fileWriter.flush();
             fileWriter.close();
@@ -330,6 +330,11 @@ public class BitMapIndex {
         for (int i = page.number; i < pageCount; ++i) {
             lastTuplePerPage.put(i, Math.max(0, lastTuplePerPage.get(i) - 1));
         }
+    }
+
+    @Override
+    public String toString() {
+        return tableName + " " + colName + " " + colValues;
     }
 
 }

@@ -444,11 +444,14 @@ public class DBApp {
         } else {
             BitMap[] bitmaps = new BitMap[arrSQLTerms.length];
             for (int i = 0; i < arrSQLTerms.length; i++)
-                bitmaps[i] = indices.get(tablename + arrSQLTerms[i]._strOperator).getTheBitMap(arrSQLTerms[i]._strOperator, (Comparable) arrSQLTerms[i]._objValue);
-
+                bitmaps[i] = indices.get(tablename + arrSQLTerms[i]._strColumnName).getTheBitMap(arrSQLTerms[i]._strOperator, (Comparable) arrSQLTerms[i]._objValue);
+            HashSet<Integer> loadedPages = new HashSet<>();
             BitMap satisfiesall = satisfies(bitmaps, strarrOperators);
             ArrayList<Integer> idxs = satisfiesall.findOnes();
             for (int idx : idxs) {
+                int curnum = pageformation.getPageNumbertofTupleNumber(tablename, idx);
+                if (loadedPages.contains(curnum)) continue;
+                loadedPages.add(curnum);
                 Page cur = pageformation.getPagetofTupleNumber(tablename, idx);
                 for (HashMap<String, Object> tuple : cur.tuples)
                     if (satisfies(tuple, arrSQLTerms, strarrOperators)) resultset.add(tuple);

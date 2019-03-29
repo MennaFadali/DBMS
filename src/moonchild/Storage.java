@@ -40,6 +40,17 @@ public class Storage {
         return ret;
     }
 
+    int getPageNumbertofTupleNumber(String tableName, int idx) throws DBAppException {
+        HashMap<Integer, Integer> hm = reference.get(tableName);
+        for (int page = 0; page < hm.size(); page++) {
+            if (idx < hm.get(page)) {
+                return page;
+            }
+        }
+        return 0;
+    }
+
+
     void SaveStorage() {
         try {
             FileWriter fw = new FileWriter(new File(DBApp.metadatastorage));
