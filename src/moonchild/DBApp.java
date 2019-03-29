@@ -151,13 +151,9 @@ public class DBApp {
             chain.addFirst(operations[i - 1]);
         }
         chain.addFirst(terms[0]);
-//        System.err.println(chain);
         chain.resolveAnd(hm);
-//        System.err.println(chain);
         chain.resolveXOR(hm);
-//        System.err.println(chain);
         chain.resolveOr(hm);
-//        System.err.println(chain);
         return (boolean) chain.head.value;
     }
 
@@ -171,13 +167,13 @@ public class DBApp {
             case "!=":
                 return !curval.equals(t._objValue);
             case "<":
-                return curval.compareTo(t._objValue) == -1;
+                return curval.compareTo(t._objValue) < 0;
             case "<=":
-                return curval.compareTo(t._objValue) == -1 || curval.compareTo(t._objValue) == 0;
+                return curval.compareTo(t._objValue) <= 0;
             case ">":
-                return curval.compareTo(t._objValue) == 1;
+                return curval.compareTo(t._objValue) > 0;
             case ">=":
-                return curval.compareTo(t._objValue) == 1 || curval.compareTo(t._objValue) == -0;
+                return curval.compareTo(t._objValue) >= 0;
         }
         return false;
     }
