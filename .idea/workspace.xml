@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fd3633ea-5916-441f-8a4c-d50a7dc3c3c8" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/moonchild/BitMapIndex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/moonchild/BitMapIndex.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/moonchild/DBAppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/moonchild/DBAppTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="DBAppTest.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/moonchild/DBAppTest.java">
+      <file leaf-file-name="BitMapIndex.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/moonchild/BitMapIndex.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
-              <caret line="60" column="8" selection-start-line="57" selection-start-column="7" selection-end-line="60" selection-end-column="8" />
+            <state relative-caret-position="1662">
+              <caret line="100" column="22" selection-start-line="100" selection-start-column="22" selection-end-line="100" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -39,7 +37,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>inse</find>
       <find>typ</find>
       <find>create</find>
       <find>insert</find>
@@ -69,6 +66,7 @@
       <find>getIndicesFromMetaDataFile</find>
       <find>compress</find>
       <find>inser</find>
+      <find>compre</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/src/moonchild</dir>
@@ -94,8 +92,8 @@
         <option value="$PROJECT_DIR$/src/moonchild/Chain.java" />
         <option value="$PROJECT_DIR$/src/moonchild/Storage.java" />
         <option value="$PROJECT_DIR$/src/moonchild/DBApp.java" />
-        <option value="$PROJECT_DIR$/src/moonchild/BitMapIndex.java" />
         <option value="$PROJECT_DIR$/src/moonchild/DBAppTest.java" />
+        <option value="$PROJECT_DIR$/src/moonchild/BitMapIndex.java" />
       </list>
     </option>
   </component>
@@ -112,7 +110,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -120,28 +117,13 @@
               <item name="moonchild" type="b2602c69:ProjectViewProjectNode" />
               <item name="moonchild" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="moonchild" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moonchild" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moonchild" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moonchild" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moonchild" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moonchild" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="moonchild" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
       <pane id="PackagesPane" />
+      <pane id="AndroidView" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -228,17 +210,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="33" width="1920" height="1047" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.32896176" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="6" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32896176" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32896176" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="6" />
@@ -256,19 +236,20 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.32896176" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32896176" />
       <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19166666" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32896176" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
@@ -278,7 +259,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info id="Capture Tool" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info active="true" anchor="bottom" id="Messages" order="10" visible="true" weight="0.32896176" />
@@ -291,14 +272,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Test.java</url>
-          <line>8</line>
-          <properties />
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
       <option name="time" value="2" />
     </breakpoint-manager>
   </component>
@@ -319,8 +292,6 @@
           <caret line="102" column="9" selection-start-line="102" selection-start-column="9" selection-end-line="102" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#13406#13407#0" expanded="true" />
-            <element signature="e#13472#13473#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -348,8 +319,6 @@
           <caret line="68" column="33" selection-start-line="68" selection-start-column="33" selection-end-line="68" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#13406#13407#0" expanded="true" />
-            <element signature="e#13472#13473#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -374,12 +343,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/metadata.csv">
-      <provider editor-type-id="csv-table-editor">
-        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
-      </provider>
-      <provider selected="true" editor-type-id="csv-text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/data/metadata.csv" />
     <entry file="file://$PROJECT_DIR$/src/moonchild/DBApp.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2304">
@@ -439,7 +403,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/data/Studentname4" />
-    <entry file="file://$PROJECT_DIR$/data/Student3" />
     <entry file="file://$PROJECT_DIR$/src/moonchild/Page.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="342">
@@ -467,16 +430,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="5" lean-forward="true" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Test.java" />
     <entry file="file://$PROJECT_DIR$/data/Studentgpa0" />
     <entry file="file://$PROJECT_DIR$/data/Studentgpa2" />
     <entry file="file://$PROJECT_DIR$/data/Studentgpa1" />
@@ -513,18 +467,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/moonchild/BitMapIndex.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="224" column="17" selection-start-line="224" selection-start-column="17" selection-end-line="224" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#13406#13407#0" expanded="true" />
-            <element signature="e#13472#13473#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/moonchild/DBApp.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="384">
@@ -538,71 +480,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/metadata.csv">
-      <provider editor-type-id="csv-table-editor">
-        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
-      </provider>
-      <provider selected="true" editor-type-id="csv-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/metadatastorage.csv">
-      <provider editor-type-id="csv-table-editor">
-        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
-      </provider>
-      <provider selected="true" editor-type-id="csv-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Student">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Student0">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Student1">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Student2">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Studentid0">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Studentid1">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Studentid2">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Studentid3">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Studentid4">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Studentid5">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Studentid6">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Studentname0">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Studentname1">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Studentname2">
+    <entry file="file://$PROJECT_DIR$/data/metadata.csv" />
+    <entry file="file://$PROJECT_DIR$/data/metadatastorage.csv" />
+    <entry file="file://$PROJECT_DIR$/data/Student" />
+    <entry file="file://$PROJECT_DIR$/data/Studentname0" />
+    <entry file="file://$PROJECT_DIR$/data/Studentname1" />
+    <entry file="file://$PROJECT_DIR$/data/Studentname2" />
+    <entry file="file://$PROJECT_DIR$/src/moonchild/DBAppTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        <state relative-caret-position="457">
+          <caret line="49" lean-forward="true" selection-start-line="13" selection-end-line="49" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/Studentname3">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/moonchild/DBAppTest.java">
+    <entry file="file://$PROJECT_DIR$/data/Student0" />
+    <entry file="file://$PROJECT_DIR$/data/Student1" />
+    <entry file="file://$PROJECT_DIR$/data/Student2" />
+    <entry file="file://$PROJECT_DIR$/data/Student3" />
+    <entry file="file://$PROJECT_DIR$/data/Studentid0" />
+    <entry file="file://$PROJECT_DIR$/data/Studentid1" />
+    <entry file="file://$PROJECT_DIR$/data/Studentid2" />
+    <entry file="file://$PROJECT_DIR$/data/Studentid3" />
+    <entry file="file://$PROJECT_DIR$/data/Studentid4" />
+    <entry file="file://$PROJECT_DIR$/data/Studentid5" />
+    <entry file="file://$PROJECT_DIR$/data/Studentid6" />
+    <entry file="file://$PROJECT_DIR$/data/Studentname3" />
+    <entry file="file://$PROJECT_DIR$/src/moonchild/BitMapIndex.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="60" column="8" selection-start-line="57" selection-start-column="7" selection-end-line="60" selection-end-column="8" />
+        <state relative-caret-position="1662">
+          <caret line="100" column="22" selection-start-line="100" selection-start-column="22" selection-end-line="100" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
