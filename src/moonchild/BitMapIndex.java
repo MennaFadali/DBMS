@@ -35,7 +35,8 @@ public class BitMapIndex {
                 while (br.ready()) {
                     String line[] = br.readLine().split(",");
                     Comparable value = DBApp.convert(line[0], type);
-                    colValues.put(value, new BitMap(decompress(line[1])));
+//                    colValues.put(value, new BitMap(decompress(line[1])));
+                    colValues.put(value, new BitMap((line[1])));
                 }
                 p++;
             } catch (FileNotFoundException e) {
@@ -98,7 +99,7 @@ public class BitMapIndex {
                     fileWriter = new FileWriter(path + p);
                 }
                 cnt++;
-                fileWriter.write(value + "," + compress(colValues.get(value).toString()) + "\n");
+                fileWriter.write(value + "," + (colValues.get(value).toString()) + "\n");
             }
             fileWriter.flush();
             fileWriter.close();
@@ -209,7 +210,6 @@ public class BitMapIndex {
                 increasedIndex = i;
             for (int j = 0; j < cur.tuples.size(); ++j) {
                 HashMap<String, Object> hm = cur.tuples.get(j);
-
                 boolean flag = DBApp.compare((Comparable) hm.get(colName), (Comparable) insert.get(colName));
                 if (flag) {
                     if (firstInsert == -1)

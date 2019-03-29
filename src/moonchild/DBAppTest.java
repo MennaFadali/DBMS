@@ -49,8 +49,25 @@ public class DBAppTest {
 //        htblColNameValue.put("gpa", new Double(4.45));
 //        database.updateTable(strTableName, new Integer(6), htblColNameValue);
 //        htblColNameValue.clear();
-        htblColNameValue.put("id", new Integer(6));
-        database.deleteFromTable(strTableName, htblColNameValue);
+//        htblColNameValue.put("id", new Integer(6));
+//        database.deleteFromTable(strTableName, htblColNameValue);
+//        htblColNameValue.clear();
+//        htblColNameValue.put("id", new Integer(0));
+//        htblColNameValue.put("name", new String("Y"));
+//        htblColNameValue.put("gpa", new Double(0.85));
+//        database.insertIntoTable(strTableName, htblColNameValue);
+//        SQLTerm[] arrSQLTerms;
+//        arrSQLTerms = new SQLTerm[2];
+//        arrSQLTerms[0]._strTableName = "Student";
+//        arrSQLTerms[0]._strColumnName= "name";
+//        arrSQLTerms[0]._strOperator = "=";
+//        arrSQLTerms[0]._objValue = "John Noor";
+//        arrSQLTerms[1]._strTableName = "Student";
+//        arrSQLTerms[1]._strColumnName= "gpa";
+//        arrSQLTerms[1]._strOperator = "=";
+//        arrSQLTerms[1]._objValue = new Double( 1.5 );
+//        String[]strarrOperators = new String[1];
+//        strarrOperators[0] = "OR";
         database.closeApp();
     }
 
