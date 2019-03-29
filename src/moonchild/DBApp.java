@@ -144,39 +144,21 @@ public class DBApp {
     }
 
     static boolean satisfies(HashMap<String, Object> hm, SQLTerm[] terms, String[] operations) {
-        int n = operations.length;
-        Stack<Object> one = new Stack<>();
-        Stack<Object> two = new Stack<>();
-        for (int i = 0; i < n; i++) {
-            one.push(terms[i]);
-            if (operations[i].equals("AND")) {
-                SQLTerm a = (SQLTerm) one.pop();
-                SQLTerm b = terms[i + 1];
-                Boolean result = satisfies(hm, a) && satisfies(hm, b);
-                one.push(result);
-            } else {
-                one.push(operations[i]);
-                one.push(terms[i + 1]);
-            }
+        Chain chain = new Chain();
+        int n = terms.length;
+        for (int i = n - 1; i > 0; i--) {
+            chain.addFirst(terms[i]);
+            chain.addFirst(operations[i - 1]);
         }
-        while (!one.isEmpty()) {
-            Object cur = one.pop();
-            if (cur instanceof String && cur.toString().equals("XOR")) {
-                Object o1 = two.pop();
-                Object o2 = one.pop();
-                Boolean result = satisfies(hm, o1) ^ satisfies(hm, o2);
-                two.push(result);
-            } else {
-                two.push(cur);
-            }
-        }
-        Boolean result = false;
-        while (!two.isEmpty()) {
-            Object cur = two.pop();
-            if (cur instanceof String) continue;
-            result |= satisfies(hm, cur);
-        }
-        return result;
+        chain.addFirst(terms[0]);
+//        System.err.println(chain);
+        chain.resolveAnd(hm);
+//        System.err.println(chain);
+        chain.resolveXOR(hm);
+//        System.err.println(chain);
+        chain.resolveOr(hm);
+//        System.err.println(chain);
+        return (boolean) chain.head.value;
     }
 
     static boolean satisfies(HashMap<String, Object> hm, Object term) {
@@ -232,40 +214,17 @@ public class DBApp {
     }
 
     static BitMap satisfies(BitMap[] bitMaps, String[] operations) {
-        int n = operations.length;
-        Stack<Object> one = new Stack<>();
-        Stack<Object> two = new Stack<>();
-        for (int i = 0; i < n; i++) {
-            one.push(bitMaps[i]);
-            if (operations[i].equals("AND")) {
-                BitMap a = (BitMap) one.pop();
-                BitMap b = bitMaps[i + 1];
-                BitMap result = BitMap.and(a, b);
-                one.push(result);
-            } else {
-                one.push(operations[i]);
-                one.push(bitMaps[i + 1]);
-            }
+        Chain chain = new Chain();
+        int n = bitMaps.length;
+        for (int i = n - 1; i > 0; i--) {
+            chain.addFirst(bitMaps[i]);
+            chain.addFirst(operations[i - 1]);
         }
-        while (!one.isEmpty()) {
-            Object cur = one.pop();
-            if (cur instanceof String && cur.toString().equals("XOR")) {
-                BitMap a = (BitMap) two.pop();
-                BitMap b = (BitMap) one.pop();
-                BitMap result = BitMap.xor(a, b);
-                two.push(result);
-            } else {
-                two.push(cur);
-            }
-        }
-        BitMap result = null;
-        while (!two.isEmpty()) {
-            Object cur = two.pop();
-            if (cur instanceof String) continue;
-            BitMap c = (BitMap) cur;
-            result = (result == null) ? c : BitMap.or(result, c);
-        }
-        return result;
+        chain.addFirst(bitMaps[0]);
+        chain.resolveAnd();
+        chain.resolveXOR();
+        chain.resolveOr();
+        return (BitMap) chain.head.value;
     }
 
     public void getAllTables() {

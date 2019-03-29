@@ -217,7 +217,6 @@ public class BitMapIndex {
                     rpage.tuples.add(insert);
                     insert = null;
                 }
-
                 rpage.tuples.add(hm);
             }
             if (i == pageCount - 1 && insert != null && rpage.tuples.size() < DBApp.N) {
